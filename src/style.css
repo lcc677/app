@@ -1,0 +1,7 @@
+.hello{
+  color:white;
+}
+
+.bg-im{
+  background-image: url('./assets/bg.jpeg') !important;
+}
