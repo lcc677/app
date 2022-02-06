@@ -1,12 +1,12 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
-  mode:'development',
+  mode: 'development',
   // 单入口
-  entry:'./src/index.js',
+  entry: './src/index2.js',
   // 多入口dependOn
   // entry:{
   //   index:{
@@ -26,80 +26,89 @@ module.exports = {
   // },
   // 动态导入
   // entry:'./src/index.js',
-  output:{
-    filename:'[name].[contenthash].bundle.js',
-    path:path.join(__dirname,'./dist'),
-    clean:true,
-    assetModuleFilename:'images/[hash][ext][query]'
+  output: {
+    filename: '[name].[contenthash].bundle.js',
+    path: path.join(__dirname, './dist'),
+    clean: true,
+    assetModuleFilename: 'images/[hash][ext][query]',
   },
-  devtool:'inline-source-map',
-  plugins:[
+  resolve: {
+    alias: {
+      '@': path.join(__dirname, './src'),
+    },
+    extensions: ['.js', '.json', '.vue'],
+  },
+  externals: {
+    jquery: 'jQuery',
+  },
+  devtool: 'inline-source-map',
+  plugins: [
     new HtmlWebpackPlugin({
-      template:'./index.html',
-      filename:'index.html',
-      inject:'body'
+      template: './index.html',
+      filename: 'index.html',
+      inject: 'body',
     }),
     new MiniCssExtractPlugin({
-      filename:'style/[hash].css'
-    })
+      filename: 'style/[hash].css',
+    }),
   ],
-  module:{
-    rules:[
+  module: {
+    rules: [
       {
         test: /\.svg$/,
-        type: 'asset/inline'
+        type: 'asset/inline',
       },
       {
         test: /\.jpeg/,
         type: 'asset/resource',
-        generator:{
-          filename:'images/[hash][ext]'
-        }
+        generator: {
+          filename: 'images/[hash][ext]',
+        },
       },
       {
         test: /\.txt/,
-        type: 'asset/source'
+        type: 'asset/source',
       },
       {
         test: /\.jpg/,
-        type:'asset',
-        parser:{
-          dataUrlCondition:{
-            maxSize: 4*1024*1024
-          }
-        }
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 4 * 1024 * 1024,
+          },
+        },
       },
 
       {
         test: /\.(css|less)/,
-        use: [MiniCssExtractPlugin.loader,'css-loader','less-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
       },
 
       {
         test: /\.js/,
         exclude: /node_modules/,
-        use:{
-          loader:'babel-loader',
-          options:{
-            presets:['@babel/preset-env'],
-            plugins:[
-              ['@babel/plugin-transform-runtime']
-            ]
-          }
-        }
-      }
-    ]
-  },
-  optimization:{
-    // 多文件入口dependOn
-    runtimeChunk:'single',
-    // 多文件入口SplitChunksPlugin
-    splitChunks:{
-      chunks:"all"
-    },
-    minimizer:[
-      new CssMinimizerWebpackPlugin()
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: [
+              ['@babel/plugin-transform-runtime'],
+            ],
+          },
+        },
+      },
     ],
-    minimize:true
-  }
-}
+  },
+  optimization: {
+    // 多文件入口dependOn
+    runtimeChunk: 'single',
+    // 多文件入口SplitChunksPlugin
+    splitChunks: {
+      chunks: 'all',
+    },
+    minimizer: [
+      new CssMinimizerWebpackPlugin(),
+    ],
+    minimize: true,
+  },
+};
