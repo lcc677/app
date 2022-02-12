@@ -1,0 +1,1 @@
+__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _name__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./name */ \"./src/name.js\");\n\n\nconsole.log(_name__WEBPACK_IMPORTED_MODULE_0__[\"default\"]);\n\n\n//# sourceURL=webpack://src/./src/index.js?
